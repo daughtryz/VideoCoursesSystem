@@ -13,7 +13,7 @@ namespace VideoCoursesSystem
     {
         public static void Main(string[] args)
         {
-            Console.WriteLine("Test");
+            Console.WriteLine("Test"); // testing 
             CreateHostBuilder(args).Build().Run();
         }
 
