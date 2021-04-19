@@ -20,7 +20,7 @@ namespace VideoCoursesSystem.Controllers
 
         public IActionResult Index()
         {
-            //Index page
+            //Index page.
             return View();
         }
 
