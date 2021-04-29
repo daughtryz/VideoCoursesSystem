@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using VideoCoursesSystem.Data;
 
 namespace VideoCoursesSystem.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210426093503_LogInforAdded")]
+    partial class LogInforAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -321,7 +323,12 @@ namespace VideoCoursesSystem.Data.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("StudentId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("StudentId");
 
                     b.ToTable("LogsInformation");
                 });
@@ -339,21 +346,6 @@ namespace VideoCoursesSystem.Data.Migrations
                     b.HasIndex("CourseId");
 
                     b.ToTable("UserCourses");
-                });
-
-            modelBuilder.Entity("VideoCoursesSystem.Data.Models.UserLogInformation", b =>
-                {
-                    b.Property<string>("StudentId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("LogInformationId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("StudentId", "LogInformationId");
-
-                    b.HasIndex("LogInformationId");
-
-                    b.ToTable("UserLogsInformation");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -437,6 +429,15 @@ namespace VideoCoursesSystem.Data.Migrations
                     b.Navigation("Student");
                 });
 
+            modelBuilder.Entity("VideoCoursesSystem.Data.Models.LogInformation", b =>
+                {
+                    b.HasOne("VideoCoursesSystem.Data.Models.ApplicationUser", "Student")
+                        .WithMany("LogsInformation")
+                        .HasForeignKey("StudentId");
+
+                    b.Navigation("Student");
+                });
+
             modelBuilder.Entity("VideoCoursesSystem.Data.Models.UserCourse", b =>
                 {
                     b.HasOne("VideoCoursesSystem.Data.Models.Course", "Course")
@@ -456,25 +457,6 @@ namespace VideoCoursesSystem.Data.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("VideoCoursesSystem.Data.Models.UserLogInformation", b =>
-                {
-                    b.HasOne("VideoCoursesSystem.Data.Models.LogInformation", "LogInformation")
-                        .WithMany()
-                        .HasForeignKey("LogInformationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("VideoCoursesSystem.Data.Models.ApplicationUser", "Student")
-                        .WithMany()
-                        .HasForeignKey("StudentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("LogInformation");
-
-                    b.Navigation("Student");
-                });
-
             modelBuilder.Entity("VideoCoursesSystem.Data.Models.ApplicationUser", b =>
                 {
                     b.Navigation("Claims");
@@ -482,6 +464,8 @@ namespace VideoCoursesSystem.Data.Migrations
                     b.Navigation("Grades");
 
                     b.Navigation("Logins");
+
+                    b.Navigation("LogsInformation");
 
                     b.Navigation("Roles");
                 });

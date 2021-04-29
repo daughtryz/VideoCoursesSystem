@@ -1,0 +1,11 @@
+﻿@model VideoCoursesSystem.ViewModels.Courses.LogInformationListViewModel
+
+
+@foreach (var kvp in Model.Logs)
+{
+<h1>@kvp.Key</h1>
+    @foreach (var log in kvp.Value)
+    {
+        <p>@log.Description</p>
+    }
+}
