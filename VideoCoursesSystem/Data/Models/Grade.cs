@@ -17,7 +17,7 @@ namespace VideoCoursesSystem.Data.Models
         public double Mark { get; set; }
 
         // Hello World
-        // Hello World
+
         public string StudentId { get; set; }
         public ApplicationUser Student { get; set; }
 
