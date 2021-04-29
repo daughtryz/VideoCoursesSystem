@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using VideoCoursesSystem.Data;
 
 namespace VideoCoursesSystem.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210422133141_CommentCourseAddedMigration")]
+    partial class CommentCourseAddedMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -234,128 +236,6 @@ namespace VideoCoursesSystem.Data.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
-            modelBuilder.Entity("VideoCoursesSystem.Data.Models.Comment", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("AuthorId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Content")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserCourseCourseId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("UserCourseUserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserCourseUserId", "UserCourseCourseId");
-
-                    b.ToTable("Comments");
-                });
-
-            modelBuilder.Entity("VideoCoursesSystem.Data.Models.Course", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Component")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("EndDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("EventContext")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("EventName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("PlatformType")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("StartDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("Time")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Courses");
-                });
-
-            modelBuilder.Entity("VideoCoursesSystem.Data.Models.Grade", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<bool>("IsSecondYear")
-                        .HasColumnType("bit");
-
-                    b.Property<double>("Mark")
-                        .HasColumnType("float");
-
-                    b.Property<string>("StudentId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("StudentId");
-
-                    b.ToTable("Grades");
-                });
-
-            modelBuilder.Entity("VideoCoursesSystem.Data.Models.LogInformation", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("LogsInformation");
-                });
-
-            modelBuilder.Entity("VideoCoursesSystem.Data.Models.UserCourse", b =>
-                {
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("CourseId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("UserId", "CourseId");
-
-                    b.HasIndex("CourseId");
-
-                    b.ToTable("UserCourses");
-                });
-
-            modelBuilder.Entity("VideoCoursesSystem.Data.Models.UserLogInformation", b =>
-                {
-                    b.Property<string>("StudentId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("LogInformationId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("StudentId", "LogInformationId");
-
-                    b.HasIndex("LogInformationId");
-
-                    b.ToTable("UserLogsInformation");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("VideoCoursesSystem.Data.Models.ApplicationRole", null)
@@ -419,76 +299,13 @@ namespace VideoCoursesSystem.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("VideoCoursesSystem.Data.Models.Comment", b =>
-                {
-                    b.HasOne("VideoCoursesSystem.Data.Models.UserCourse", "UserCourse")
-                        .WithMany("Comments")
-                        .HasForeignKey("UserCourseUserId", "UserCourseCourseId");
-
-                    b.Navigation("UserCourse");
-                });
-
-            modelBuilder.Entity("VideoCoursesSystem.Data.Models.Grade", b =>
-                {
-                    b.HasOne("VideoCoursesSystem.Data.Models.ApplicationUser", "Student")
-                        .WithMany("Grades")
-                        .HasForeignKey("StudentId");
-
-                    b.Navigation("Student");
-                });
-
-            modelBuilder.Entity("VideoCoursesSystem.Data.Models.UserCourse", b =>
-                {
-                    b.HasOne("VideoCoursesSystem.Data.Models.Course", "Course")
-                        .WithMany()
-                        .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("VideoCoursesSystem.Data.Models.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Course");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("VideoCoursesSystem.Data.Models.UserLogInformation", b =>
-                {
-                    b.HasOne("VideoCoursesSystem.Data.Models.LogInformation", "LogInformation")
-                        .WithMany()
-                        .HasForeignKey("LogInformationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("VideoCoursesSystem.Data.Models.ApplicationUser", "Student")
-                        .WithMany()
-                        .HasForeignKey("StudentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("LogInformation");
-
-                    b.Navigation("Student");
-                });
-
             modelBuilder.Entity("VideoCoursesSystem.Data.Models.ApplicationUser", b =>
                 {
                     b.Navigation("Claims");
 
-                    b.Navigation("Grades");
-
                     b.Navigation("Logins");
 
                     b.Navigation("Roles");
-                });
-
-            modelBuilder.Entity("VideoCoursesSystem.Data.Models.UserCourse", b =>
-                {
-                    b.Navigation("Comments");
                 });
 #pragma warning restore 612, 618
         }
