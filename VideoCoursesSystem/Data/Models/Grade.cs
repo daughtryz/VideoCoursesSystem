@@ -12,7 +12,7 @@ namespace VideoCoursesSystem.Data.Models
             this.Id = Guid.NewGuid().ToString();
         }
         public string Id { get; set; }
-        // Hello World
+        // Hello World sdfsafasdfasdf
         public bool IsSecondYear { get; set; }
         public double Mark { get; set; }
 
