@@ -15,7 +15,7 @@ namespace VideoCoursesSystem
         {
             // Console.WriteLine("Test");
             // Console.WriteLine("Test2");
-            // DV test
+            // DV test //
             CreateHostBuilder(args).Build().Run();
         }
 
