@@ -1,0 +1,21 @@
+﻿
+@model VideoCoursesSystem.ViewModels.Courses.GradeListViewModel
+
+<h1>Оценки на студенти от втора година!</h1>
+<table class="table">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Оценка</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var grade in Model.Grades)
+        {
+            <tr>
+                <td>@grade.StudentId</td>
+                <td>@grade.Mark</td>
+            </tr>
+        }
+    </tbody>
+</table>
