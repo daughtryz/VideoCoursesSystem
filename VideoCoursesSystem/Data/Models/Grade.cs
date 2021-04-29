@@ -16,6 +16,8 @@ namespace VideoCoursesSystem.Data.Models
         public bool IsSecondYear { get; set; }
         public double Mark { get; set; }
 
+        // Hello World
+        // Hello World
         public string StudentId { get; set; }
         public ApplicationUser Student { get; set; }
 
