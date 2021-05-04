@@ -1,0 +1,8 @@
+﻿
+@model VideoCoursesSystem.ViewModels.Exercises.ExerciseViewModel
+
+<form asp-controller="Students" asp-action="ExerciseEditMark" method="POST">
+    <label for="inputMark">Оценка</label>
+    <input type="number" class="form-control" placeholder="Оценка" asp-for="Mark">
+    <button type="submit" class="btn btn-primary">Оцени</button>
+</form>

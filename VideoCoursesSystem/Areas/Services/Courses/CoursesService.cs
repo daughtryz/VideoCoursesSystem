@@ -15,7 +15,14 @@ namespace VideoCoursesSystem.Areas.Services.Teachers
             _db = db;
         }
         public IEnumerable<Course> AllCourses() => _db.Courses.OrderByDescending(c => c.StartDate).ToList();
-        public Course CourseById(string id) => _db.Courses.FirstOrDefault(c => c.Id == id);
+        public Course CourseById(string id) 
+        {
+            var currentCourse = _db.Courses.FirstOrDefault(c => c.Id == id);
+            currentCourse.Viewers++;
+            _db.Courses.Update(currentCourse);
+             _db.SaveChanges();
+            return _db.Courses.FirstOrDefault(c => c.Id == id);
+        } 
         
         public async Task CreateCourseAsync(string title, string component, string description, DateTime startDate, DateTime endDate)
         {

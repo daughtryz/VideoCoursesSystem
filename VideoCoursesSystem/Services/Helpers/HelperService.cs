@@ -12,19 +12,22 @@ namespace VideoCoursesSystem.Services.Helpers
             this.Ids = new List<string>();
         }
         public List<string> Ids { get; set; }
-        public void AddCourseId(string courseId)
+
+        public void AddId(string id)
         {
-            this.Ids.Add(courseId);
+            this.Ids.Add(id);
         }
+
         public void Dispose()
         {
             this.Ids.Clear();
         }
 
-        public string GetCourseId()
+        public string GetId()
         {
             var currentId = this.Ids.FirstOrDefault();
             return currentId;
         }
+
     }
 }

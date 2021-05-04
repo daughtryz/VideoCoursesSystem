@@ -40,10 +40,23 @@ namespace VideoCoursesSystem.Services
                     await exercise.CopyToAsync(memoryStream);
                     currentExercise.LastModified = DateTime.UtcNow;
                     currentExercise.FileName += "|" + exercise.FileName;
-
-                    await _db.SaveChangesAsync();
+                    _db.Exercises.Update(currentExercise);
                 }
             }
+            
+            await _db.SaveChangesAsync();
+        }
+
+        public async Task EditExerciseMarkAsync(string exerciseId,double mark)
+        {
+            Exercise currentExercise = _db.Exercises.FirstOrDefault(e => e.Id == exerciseId);
+
+            if (currentExercise == null)
+            {
+                throw new ArgumentException("No such exercise!");
+            }
+            currentExercise.Mark = mark;
+            _db.Exercises.Update(currentExercise);
             await _db.SaveChangesAsync();
         }
 

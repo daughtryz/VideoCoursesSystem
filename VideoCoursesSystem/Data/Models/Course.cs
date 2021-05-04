@@ -27,7 +27,7 @@ namespace VideoCoursesSystem.Data.Models
         public string EventName { get; set; }
         public PlatformType PlatformType { get; set; }
         public string Description { get; set; }
-
+        public int Viewers { get; set; }
         public ICollection<Exercise> Exercises { get; set; }
     }
 }

@@ -1,10 +1,13 @@
-﻿@*to do the details page*@
+﻿
+@using VideoCoursesSystem.Data.Models;
+@using Microsoft.AspNetCore.Identity;
+@inject SignInManager<ApplicationUser> signInManager;
 @model VideoCoursesSystem.ViewModels.Courses.CourseViewModel;
 
 <div class="row">
     <div class="col-4">
         <h3>@Model.Title</h3>
-        <hr style="height: 1px;" class="bg-info"/>
+        <hr style="height: 1px;" class="bg-info" />
         <h4>Условие</h4>
         <p>@Model.Description</p>
         <i class="far fa-clock"></i><p>Начало: @Model.StartDate</p>
