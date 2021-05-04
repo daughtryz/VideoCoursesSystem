@@ -12,9 +12,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using VideoCoursesSystem.Areas.Services.Teachers;
 using VideoCoursesSystem.Data;
 using VideoCoursesSystem.Data.Models;
 using VideoCoursesSystem.Services;
+using VideoCoursesSystem.Services.Helpers;
 
 namespace VideoCoursesSystem
 {
@@ -39,6 +41,9 @@ namespace VideoCoursesSystem
             //Register services
             services.AddTransient<IStudentsService, StudentsService>();
             services.AddTransient<ILogsInformationService, LogsInformationService>();
+            services.AddTransient<ICoursesService, CoursesService>();
+            services.AddSingleton<IHelperService, HelperService>();
+
 
             services.AddControllersWithViews();
             services.AddRazorPages();
@@ -74,6 +79,10 @@ namespace VideoCoursesSystem
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapControllerRoute(
+                         name: "areaRoute",
+                         pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");

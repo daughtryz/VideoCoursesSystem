@@ -1,0 +1,27 @@
+﻿@*to do the details page*@
+@model VideoCoursesSystem.ViewModels.Courses.CourseViewModel;
+
+<div class="row">
+    <div class="col-4">
+        <h3>@Model.Title</h3>
+        <hr style="height: 1px;" class="bg-info"/>
+        <h4>Условие</h4>
+        <p>@Model.Description</p>
+        <i class="far fa-clock"></i><p>Начало: @Model.StartDate</p>
+        <i class="far fa-clock"></i><p>Край: @Model.StartDate</p>
+    </div>
+    <div class="col-4">
+        <h3>Качени упражнения</h3>
+        <hr style="height: 1px;" class="bg-info" />
+        <div class="list-group">
+            @foreach (var exercise in Model.Exercises)
+            {
+                <a asp-controller="Students" asp-action="ExerciseDetails" asp-route-id="@exercise.Id" class="list-group-item list-group-item-action list-group-item-primary">@exercise.StudentId</a>
+            }
+
+        </div>
+    </div>
+    <div class="col-4">
+        <a asp-controller="Students" asp-action="UploadExercise" asp-route-courseId="@Model.Id">Качване на упражнение</a>
+    </div>
+</div>

@@ -1,0 +1,42 @@
+﻿@model VideoCoursesSystem.ViewModels.Exercises.ExerciseViewModel;
+
+<h2>Submission status</h2>
+<form>
+    <h4>Submitted files:</h4>
+    <ul>
+    @if (Model.FileNames == null)
+    {
+        <li><a asp-controller="Students" asp-action="DownloadExercise" asp-route-fileName="@Model.FileName">@Model.FileName</a></li>
+    }
+    else
+    {
+
+        @foreach (var fileName in Model.FileNames)
+        {
+
+            <li><a asp-controller="Students" asp-action="DownloadExercise" asp-route-fileName="@fileName">@fileName</a></li>
+        }
+    }
+    </ul>
+    <table class="table table-striped">
+        <tbody>
+            <tr>
+                <th scope="row">Submission status</th>
+                <td>Submitted for grading</td>
+            </tr>
+            <tr>
+                <th scope="row">Grading status</th>
+                <td>Not graded <a asp-controller="Students" asp-action="EditExercise"><i class="fas fa-edit"></i></a></td>
+            </tr>
+            <tr>
+                <th scope="row">Last modified</th>
+                <td>@Model.LastModified</td>
+            </tr>           
+            <tr>
+                <th scope="row">Submission comments</th>
+                <td>Comments</td>
+            </tr>
+        </tbody>
+    </table>
+    <button type="submit" class="btn btn-primary" asp-controller="Students" asp-action="ExerciseEdit" asp-route-id="@Model.Id">Edit submission</button>
+</form>

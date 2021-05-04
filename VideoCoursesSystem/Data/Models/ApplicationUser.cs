@@ -15,6 +15,7 @@ namespace VideoCoursesSystem.Data.Models
             this.Claims = new HashSet<IdentityUserClaim<string>>();
             this.Logins = new HashSet<IdentityUserLogin<string>>();
             this.Grades = new HashSet<Grade>();
+            this.Exercises = new HashSet<Exercise>();
         }
 
         public virtual ICollection<IdentityUserRole<string>> Roles { get; set; }
@@ -24,6 +25,8 @@ namespace VideoCoursesSystem.Data.Models
         public virtual ICollection<IdentityUserLogin<string>> Logins { get; set; }
 
         public virtual ICollection<Grade> Grades { get; set; }
+
+        public virtual ICollection<Exercise> Exercises { get; set; }
 
     }
 }

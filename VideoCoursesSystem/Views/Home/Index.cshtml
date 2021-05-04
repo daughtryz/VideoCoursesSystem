@@ -1,4 +1,6 @@
-﻿@{
+﻿
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
@@ -9,12 +11,11 @@
         <li class="list-group-item"><a href="#">Мерки на централната тенденция</a></li>
         <li class="list-group-item"><a href="#">Мерки на разсейване</a></li>
         <li class="list-group-item"><a href="#">Корелационен анализ</a></li>
-        <li class="list-group-item"><a asp-controller="Students" asp-action="FileSubmissions">Качване на упражнение</a></li>
-
+        @*<li class="list-group-item"><a asp-controller="Students" asp-action="FileSubmissions">Качване на упражнение</a></li>*@
     </ul>
 
-    <form asp-controller="Home" asp-action="UploadStudentsGrades" method="POST" enctype="multipart/form-data">
+    @*<form asp-controller="Home" asp-action="UploadStudentsGrades" method="POST" enctype="multipart/form-data">
         <input type="file" id="myFile" name="uploadedFile">
         <input type="submit">
-    </form>
+    </form>*@
 </div>

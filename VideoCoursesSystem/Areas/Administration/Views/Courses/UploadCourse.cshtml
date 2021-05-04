@@ -1,0 +1,40 @@
+﻿@model VideoCoursesSystem.InputModels.CourseInputModel;
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, AuthoringTagHelpers
+
+<form method="POST" asp-area="Administration" 
+                      asp-controller="Courses"
+                      asp-action="UploadCourse">
+    <div class="row">
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="inputTitle">Заглавие</label>
+                <input type="text" class="form-control" placeholder="Заглавие" asp-for="Title">
+            </div>
+            <div class="form-group col-md-6">
+                <label for="inputComponent">Компонент</label>
+                <input type="text" class="form-control" asp-for="Component" placeholder="Компонент">
+            </div>
+        </div>
+        <div class="form-group shadow-textarea col-md-6">
+            <label for="inputDescription">Условие на задачата</label>
+            <textarea class="form-control z-depth-1" rows="3" asp-for="Description" placeholder="Напишете условие на задачата"></textarea>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="example-datetime-local-input" class="col-form-label">Начало на задание</label>
+                <div class="col-10">
+                    <input class="form-control" type="datetime-local" asp-for="StartDate">
+                </div>
+            </div>
+            <div class="form-group col-md-6">
+                <label for="example-datetime-local-input" class="col-form-label">Край на задание</label>
+                <div class="col-10">
+                    <input class="form-control" type="datetime-local" asp-for="EndDate">
+                </div>
+            </div>
+        </div>      
+    </div>
+    <button type="submit" class="btn btn-primary">Създаване</button>
+</form>

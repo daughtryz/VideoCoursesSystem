@@ -1,0 +1,29 @@
+﻿@model VideoCoursesSystem.ViewModels.Courses.CourseListViewModel
+
+<h1>Всички курсове/упражнения</h1>
+
+@*@foreach (var course in Model.Courses)
+    {
+        <p>@course.Title</p>
+        <p>@course.Description</p>
+        <p>@course.StartDate</p>
+        <p>@course.EndDate</p>
+        <br />
+
+    }*@
+<div class="row">
+    @foreach (var course in Model.Courses)
+    {
+        <div class="col-sm-3">
+            <div class="card text-white bg-info mb-5" style="max-width: 18rem;">
+                <div class="card-header">Упражнение</div>
+                <div class="card-body">
+                    <h5 class="card-title"><a asp-controller="Courses" asp-action="Details" asp-route-id="@course.Id">@course.Title</a></h5>
+                    <i class="far fa-clock"></i><p>Начало: @course.StartDate</p>
+                    <i class="far fa-clock"></i><p>Край: @course.EndDate</p>
+                </div>
+
+            </div>
+        </div>
+    }
+</div>
