@@ -287,9 +287,47 @@ namespace VideoCoursesSystem.Data.Migrations
                     b.Property<DateTime>("Time")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.ToTable("Courses");
+                });
+
+            modelBuilder.Entity("VideoCoursesSystem.Data.Models.Exercise", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("CourseId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("DateSubmission")
+                        .HasColumnType("datetime2");
+
+                    b.Property<byte[]>("File")
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<string>("FileName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("LastModified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<double>("Mark")
+                        .HasColumnType("float");
+
+                    b.Property<string>("StudentId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CourseId");
+
+                    b.HasIndex("StudentId");
+
+                    b.ToTable("Exercises");
                 });
 
             modelBuilder.Entity("VideoCoursesSystem.Data.Models.Grade", b =>
@@ -428,6 +466,21 @@ namespace VideoCoursesSystem.Data.Migrations
                     b.Navigation("UserCourse");
                 });
 
+            modelBuilder.Entity("VideoCoursesSystem.Data.Models.Exercise", b =>
+                {
+                    b.HasOne("VideoCoursesSystem.Data.Models.Course", "Course")
+                        .WithMany("Exercises")
+                        .HasForeignKey("CourseId");
+
+                    b.HasOne("VideoCoursesSystem.Data.Models.ApplicationUser", "Student")
+                        .WithMany("Exercises")
+                        .HasForeignKey("StudentId");
+
+                    b.Navigation("Course");
+
+                    b.Navigation("Student");
+                });
+
             modelBuilder.Entity("VideoCoursesSystem.Data.Models.Grade", b =>
                 {
                     b.HasOne("VideoCoursesSystem.Data.Models.ApplicationUser", "Student")
@@ -479,11 +532,18 @@ namespace VideoCoursesSystem.Data.Migrations
                 {
                     b.Navigation("Claims");
 
+                    b.Navigation("Exercises");
+
                     b.Navigation("Grades");
 
                     b.Navigation("Logins");
 
                     b.Navigation("Roles");
+                });
+
+            modelBuilder.Entity("VideoCoursesSystem.Data.Models.Course", b =>
+                {
+                    b.Navigation("Exercises");
                 });
 
             modelBuilder.Entity("VideoCoursesSystem.Data.Models.UserCourse", b =>

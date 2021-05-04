@@ -17,6 +17,8 @@ namespace VideoCoursesSystem.Data
         public DbSet<Grade> Grades { get; set; }
         public DbSet<LogInformation> LogsInformation { get; set; }
 
+        public DbSet<Exercise> Exercises { get; set; }
+
         public DbSet<UserLogInformation> UserLogsInformation { get; set; }
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)

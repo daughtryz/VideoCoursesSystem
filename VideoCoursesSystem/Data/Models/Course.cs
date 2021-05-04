@@ -21,11 +21,13 @@ namespace VideoCoursesSystem.Data.Models
         public DateTime Time { get; set; }
         public string EventContext { get; set; }
 
+        public string Title { get; set; }
         public string Component { get; set; }
 
         public string EventName { get; set; }
         public PlatformType PlatformType { get; set; }
-
         public string Description { get; set; }
+
+        public ICollection<Exercise> Exercises { get; set; }
     }
 }

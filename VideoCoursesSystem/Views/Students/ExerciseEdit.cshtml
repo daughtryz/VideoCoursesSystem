@@ -1,0 +1,46 @@
+﻿@model VideoCoursesSystem.ViewModels.Exercises.ExerciseViewModel;
+
+<form asp-controller="Students" asp-action="ExerciseEdit" asp-route-id="@Model.Id" asp-area="" method="POST" enctype="multipart/form-data">
+    <div class="container">
+        <br />
+        <div class="row">
+            <div class="col-md-11">
+                <div class="panel panel-default">
+                    <div class="panel-heading"><strong>Качване на файл</strong> <small> </small></div>
+                    <div class="panel-body">
+                        <div class="input-group image-preview">
+                            @*<input placeholder="" type="text" class="form-control image-preview-filename" disabled="disabled">*@
+                            @*<span class="input-group-btn">*@
+                            @*<button type="button" class="btn btn-default image-preview-clear" style="display:none;"> <span class="glyphicon glyphicon-remove"></span> Clear </button>*@
+                            <div class="custom-file">
+                                <span class="glyphicon glyphicon-folder-open"></span> <span class="image-preview-input-title">Търсене</span>
+                                <input type="file" class="form-control custom-file-input" accept="*" name="exercises" multiple />
+                                <label class="custom-file-label">Избери файл</label>
+                            </div>
+                            @*</span>*@
+                        </div>
+                        <br />
+                        <div class="upload-drop-zone" id="drop-zone"> Or drag and drop files here </div>
+                        <br />
+                        <br />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Edit</button>
+</form>
+
+<script>
+    $(document).ready(function () {
+        $('.custom-file-input').on("change", function () {
+            var fileLabel = $(this).next('.custom-file-label');
+            var files = $(this)[0].files;
+            if (files.length > 1) {
+                fileLabel.html(files.length + ' избрани файла');
+            } else if (files.length == 1) {
+                fileLabel.html(files[0].name);
+            }
+        })
+    })
+</script>
