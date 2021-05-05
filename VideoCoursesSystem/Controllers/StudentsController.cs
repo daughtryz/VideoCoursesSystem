@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Grpc.Core;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -55,16 +56,17 @@ namespace VideoCoursesSystem.Controllers
             };
             return View(viewModel);
         }
+        [Authorize]
         public IActionResult UploadExercise(string courseId)
         {
-            _helperService.AddCourseId(courseId);
+            _helperService.AddId(courseId);
             return this.View();
         }
         [HttpPost]
         public async Task<IActionResult> UploadExercise(IEnumerable<IFormFile> exercises)
         {
             ApplicationUser applicationUser = await _userManager.GetUserAsync(User);
-            string courseId = _helperService.GetCourseId();
+            string courseId = _helperService.GetId();
             await _studentsService.UploadExerciseAsync(exercises, applicationUser.Id, courseId);
             return RedirectToAction("Details", "Courses", new { area = "",id = courseId });
         }
@@ -86,7 +88,6 @@ namespace VideoCoursesSystem.Controllers
                 }
                 logs[studentId].Add(_mapper.Map<LogInformationViewModel>(_logsInformationService.GetAllLogs().FirstOrDefault(l => l.Id == userLog.LogInformationId)));
             }
-
             var viewModel = new LogInformationListViewModel
             {
                 Logs = logs
@@ -113,11 +114,23 @@ namespace VideoCoursesSystem.Controllers
         public async Task<IActionResult> ExerciseEdit(string id, IEnumerable<IFormFile> exercises)
         {
             var viewModel = _mapper.Map<ExerciseViewModel>(_studentsService.GetExerciseById(id));
-            ApplicationUser applicationUser = await _userManager.GetUserAsync(User);
-            string courseId = _helperService.GetCourseId();
+            ApplicationUser applicationUser = await _userManager.GetUserAsync(User);    
             await _studentsService.EditExerciseAsync(exercises, id);
 
-            return RedirectToAction("Details", "Courses", new { area = "", id = courseId });
+            return RedirectToAction("Details", "Courses", new { area = "", id = viewModel.CourseId });
+        }
+        public IActionResult ExerciseEditMark(string exerciseId)
+        {
+            _helperService.AddId(exerciseId);
+            return this.View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> ExerciseEditMark(ExerciseViewModel model)
+        {
+            var id = _helperService.GetId();
+            var viewModel = _mapper.Map<ExerciseViewModel>(_studentsService.GetExerciseById(id));
+            await _studentsService.EditExerciseMarkAsync(viewModel.Id, model.Mark);
+            return this.RedirectToAction("ExerciseDetails","Students",new {id= viewModel.Id });
         }
         public IActionResult ExerciseDetails(string id)
         {

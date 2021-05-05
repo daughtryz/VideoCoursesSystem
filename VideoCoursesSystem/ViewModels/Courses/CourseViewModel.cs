@@ -14,6 +14,7 @@ namespace VideoCoursesSystem.ViewModels.Courses
         public string Title { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
+        public int Viewers { get; set; }
         public List<ExerciseViewModel> Exercises { get; set; } = new List<ExerciseViewModel>();
     }
 }

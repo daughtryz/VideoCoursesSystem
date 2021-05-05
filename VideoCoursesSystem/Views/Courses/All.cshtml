@@ -11,19 +11,45 @@
         <br />
 
     }*@
+
+<div>
+    <div id="teams-search-holder" class="form-group d-flex justify-content-between w-50">
+        <input type="text" class="form-control text-primary" id="exercises-search" name="search" placeholder="Search..">
+    </div>
+</div>
+
 <div class="row">
     @foreach (var course in Model.Courses)
     {
-        <div class="col-sm-3">
-            <div class="card text-white bg-info mb-5" style="max-width: 18rem;">
+        <div class="exercise col-sm-3">
+            <div class="card text-dark bg-light mb-5" style="max-width: 18rem;">
                 <div class="card-header">Упражнение</div>
                 <div class="card-body">
-                    <h5 class="card-title"><a asp-controller="Courses" asp-action="Details" asp-route-id="@course.Id">@course.Title</a></h5>
+                    <h5 class="card-title">
+                    <a class="exercise-title" asp-controller="Courses" asp-action="Details" asp-route-id="@course.Id">@course.Title</a>
+                    </h5>
                     <i class="far fa-clock"></i><p>Начало: @course.StartDate</p>
                     <i class="far fa-clock"></i><p>Край: @course.EndDate</p>
+                    <i class="far fa-eye"></i><p>@course.Viewers</p>
                 </div>
-
             </div>
         </div>
     }
 </div>
+@section Scripts
+{
+    <script>
+        $('#exercises-search').on("change paste keyup", function () {
+            $('.exercise').show();
+            let searchValue = $('#exercises-search').val();
+            console.log('search value', searchValue);
+            for (let elem of $('.exercise')) {
+                let exerciseName = $($(elem).children().children().children().children()[0]).text();
+                console.log(exerciseName);
+                if (!exerciseName.includes(searchValue)) {
+                    $(elem).hide();
+                }
+            }
+        })
+    </script>
+}

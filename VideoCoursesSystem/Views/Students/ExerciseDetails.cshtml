@@ -1,22 +1,23 @@
-﻿@model VideoCoursesSystem.ViewModels.Exercises.ExerciseViewModel;
+﻿@using VideoCoursesSystem.Data.Models;
+@model VideoCoursesSystem.ViewModels.Exercises.ExerciseViewModel;
+@inject SignInManager<ApplicationUser> signInManager;
 
 <h2>Submission status</h2>
 <form>
     <h4>Submitted files:</h4>
     <ul>
-    @if (Model.FileNames == null)
-    {
-        <li><a asp-controller="Students" asp-action="DownloadExercise" asp-route-fileName="@Model.FileName">@Model.FileName</a></li>
-    }
-    else
-    {
-
-        @foreach (var fileName in Model.FileNames)
+        @if (Model.FileNames == null)
+        {
+            <li><a asp-controller="Students" asp-action="DownloadExercise" asp-route-fileName="@Model.FileName">@Model.FileName</a></li>
+        }
+        else
         {
 
-            <li><a asp-controller="Students" asp-action="DownloadExercise" asp-route-fileName="@fileName">@fileName</a></li>
+            @foreach (var fileName in Model.FileNames)
+            {
+                <li><a asp-controller="Students" asp-action="DownloadExercise" asp-route-fileName="@fileName">@fileName</a></li>
+            }
         }
-    }
     </ul>
     <table class="table table-striped">
         <tbody>
@@ -26,12 +27,28 @@
             </tr>
             <tr>
                 <th scope="row">Grading status</th>
-                <td>Not graded <a asp-controller="Students" asp-action="EditExercise"><i class="fas fa-edit"></i></a></td>
+                @if (Model.Mark == 0 && User.IsInRole("Admin"))
+                {
+                    <td>Not graded <a asp-controller="Students" asp-action="ExerciseEditMark" asp-route-exerciseId="@Model.Id"><i class="fas fa-edit"></i></a></td>
+                }
+                else if (Model.Mark > 0 && User.IsInRole("Admin"))
+                {
+                    <td>@Model.Mark <a asp-controller="Students" asp-action="ExerciseEditMark" asp-route-exerciseId="@Model.Id"><i class="fas fa-edit"></i></a></td>
+                }
+                else if (Model.Mark == 0 && !User.IsInRole("Admin"))
+                {
+                    <td>Not graded</td>
+                }
+                else if (Model.Mark > 0 && !User.IsInRole("Admin"))
+                {
+                    <td>@Model.Mark</td>
+                }
+
             </tr>
             <tr>
                 <th scope="row">Last modified</th>
                 <td>@Model.LastModified</td>
-            </tr>           
+            </tr>
             <tr>
                 <th scope="row">Submission comments</th>
                 <td>Comments</td>
