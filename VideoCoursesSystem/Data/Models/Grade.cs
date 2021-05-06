@@ -12,14 +12,11 @@ namespace VideoCoursesSystem.Data.Models
             this.Id = Guid.NewGuid().ToString();
         }
         public string Id { get; set; }
-        // H
         public bool IsSecondYear { get; set; }
         public double Mark { get; set; }
-
-        // Hello World
-
         public string StudentId { get; set; }
         public ApplicationUser Student { get; set; }
+        public ICollection<Exercise> Exercises { get; set; }
 
     }
 }

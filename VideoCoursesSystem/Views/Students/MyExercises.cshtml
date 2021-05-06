@@ -1,0 +1,21 @@
+﻿@model VideoCoursesSystem.ViewModels.Exercises.ExerciseListViewModel;
+
+<h3>Моите упражнения + оценки</h3>
+
+<table class="table">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">Упражнение</th>
+            <th scope="col">Оценка</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var exercise in Model.Exercises)
+        {
+        <tr>
+            <td><i class="fas fa-book"></i>   <a asp-controller="Courses" asp-action="Details" asp-route-id="@exercise.Course.Id">@exercise.Course.Title</a></td>
+            <td><i class="fas fa-marker"></i>  @exercise.Mark</td>
+        </tr>
+        }
+    </tbody>
+</table>

@@ -9,9 +9,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using VideoCoursesSystem.Areas.Services.Teachers;
 using VideoCoursesSystem.Data.Models;
 using VideoCoursesSystem.InputModels;
 using VideoCoursesSystem.Services;
+using VideoCoursesSystem.Services.Grades;
 using VideoCoursesSystem.Services.Helpers;
 using VideoCoursesSystem.ViewModels.Courses;
 using VideoCoursesSystem.ViewModels.Exercises;
@@ -25,14 +27,24 @@ namespace VideoCoursesSystem.Controllers
         private readonly IMapper _mapper;
         private readonly ILogsInformationService _logsInformationService;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IGradesService _gradesService;
+        private readonly ICoursesService _coursesService;
 
-        public StudentsController(IHelperService helperService,IStudentsService studentsService,IMapper mapper,ILogsInformationService logsInformationService, UserManager<ApplicationUser> userManager)
+        public StudentsController(IHelperService helperService,
+            IStudentsService studentsService,
+            IMapper mapper,
+            ILogsInformationService logsInformationService,
+            UserManager<ApplicationUser> userManager,
+            IGradesService gradesService,
+            ICoursesService coursesService)
         {
             _helperService = helperService;
             _studentsService = studentsService;
             _mapper = mapper;
             _logsInformationService = logsInformationService;
             _userManager = userManager;
+            _gradesService = gradesService;
+            _coursesService = coursesService;
         }
         public IActionResult Index()
         {
@@ -59,22 +71,22 @@ namespace VideoCoursesSystem.Controllers
         [Authorize]
         public IActionResult UploadExercise(string courseId)
         {
-            _helperService.AddId(courseId);
+            _helperService.AddCourseId(courseId);
             return this.View();
         }
         [HttpPost]
         public async Task<IActionResult> UploadExercise(IEnumerable<IFormFile> exercises)
         {
             ApplicationUser applicationUser = await _userManager.GetUserAsync(User);
-            string courseId = _helperService.GetId();
+            string courseId = _helperService.GetCourseId();
             await _studentsService.UploadExerciseAsync(exercises, applicationUser.Id, courseId);
             return RedirectToAction("Details", "Courses", new { area = "",id = courseId });
         }
-
         public IActionResult FileSubmissions()
         {
             return this.View();
         }
+        [Authorize(Roles = "Admin")]
         public IActionResult StudentsActivities()
         {
             var logs = new Dictionary<string, List<LogInformationViewModel>>();
@@ -95,7 +107,6 @@ namespace VideoCoursesSystem.Controllers
 
             return View(viewModel);
         }
-
         public IActionResult ExerciseEdit(string id)
         {
             var viewModel = _mapper.Map<ExerciseViewModel>(_studentsService.GetExerciseById(id));
@@ -121,15 +132,17 @@ namespace VideoCoursesSystem.Controllers
         }
         public IActionResult ExerciseEditMark(string exerciseId)
         {
-            _helperService.AddId(exerciseId);
+            _helperService.AddExerciseId(exerciseId);
             return this.View();
         }
         [HttpPost]
         public async Task<IActionResult> ExerciseEditMark(ExerciseViewModel model)
         {
-            var id = _helperService.GetId();
-            var viewModel = _mapper.Map<ExerciseViewModel>(_studentsService.GetExerciseById(id));
-            await _studentsService.EditExerciseMarkAsync(viewModel.Id, model.Mark);
+            var exerciseId = _helperService.GetExerciseId();
+            var curr = _studentsService.GetExerciseById(exerciseId);
+            var viewModel = _mapper.Map<ExerciseViewModel>(_studentsService.GetExerciseById(exerciseId));
+           
+            await _studentsService.EditExerciseMarkAsync(viewModel.Id, model.Mark,viewModel.StudentId);
             return this.RedirectToAction("ExerciseDetails","Students",new {id= viewModel.Id });
         }
         public IActionResult ExerciseDetails(string id)
@@ -145,7 +158,21 @@ namespace VideoCoursesSystem.Controllers
             
             return this.View(viewModel);
         }
-
+        [Authorize]
+        public async Task<IActionResult> MyExercises()
+        {
+            var user = await _userManager.FindByIdAsync(User.Identity.Name);
+           
+            var viewModel = new ExerciseListViewModel
+            {
+                Exercises = _studentsService.GetStudentExercises(user.Id).Select(se => new ExerciseViewModel
+                {
+                    Mark = se.Mark,
+                    Course = _mapper.Map<CourseViewModel>(_coursesService.CourseById(se.CourseId))
+                })
+            };
+            return this.View(viewModel);
+        }
         public async Task<IActionResult> DownloadExercise(string fileName)
         {
             string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), fileName);

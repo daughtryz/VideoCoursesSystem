@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using VideoCoursesSystem.Data;
 using VideoCoursesSystem.Data.Models;
+using VideoCoursesSystem.Services.Grades;
 using VideoCoursesSystem.ViewModels.Courses;
 
 namespace VideoCoursesSystem.Services
@@ -14,10 +15,12 @@ namespace VideoCoursesSystem.Services
     public class StudentsService : IStudentsService
     {
         private readonly ApplicationDbContext _db;
+        private readonly IGradesService _gradesService;
         private Dictionary<string, List<string>> _helper;
-        public StudentsService(ApplicationDbContext db)
+        public StudentsService(ApplicationDbContext db,IGradesService gradesService)
         {
             _db = db;
+            _gradesService = gradesService;
             _helper = new Dictionary<string, List<string>>();
         }
 
@@ -46,10 +49,17 @@ namespace VideoCoursesSystem.Services
             
             await _db.SaveChangesAsync();
         }
-
-        public async Task EditExerciseMarkAsync(string exerciseId,double mark)
+        public async Task EditExerciseMarkAsync(string exerciseId,double mark,string studentId)
         {
             Exercise currentExercise = _db.Exercises.FirstOrDefault(e => e.Id == exerciseId);
+            if(currentExercise.GradeId == null)
+            {
+                Grade currentGrade = await _gradesService.CreateGradeAsync(mark, studentId);
+                currentExercise.GradeId = currentGrade.Id;
+            } else
+            {
+                await _gradesService.UpdateGradeAsync(mark, studentId, currentExercise.GradeId);
+            }
 
             if (currentExercise == null)
             {
@@ -68,6 +78,11 @@ namespace VideoCoursesSystem.Services
         public IEnumerable<UserCourse> GetStudentActivities()
         {
             return _db.UserCourses.ToList();
+        }
+
+        public IEnumerable<Exercise> GetStudentExercises(string studentId)
+        {
+            return _db.Exercises.Where(x => x.StudentId == studentId && x.GradeId != null).ToList();            
         }
 
         public IEnumerable<Grade> GetStudentGrades()

@@ -22,5 +22,7 @@ namespace VideoCoursesSystem.Data.Models
         public DateTime LastModified { get; set; }
         public DateTime DateSubmission { get; set; }
         public string FileName { get; set; }
+        public string GradeId { get; set; }
+        public Grade Grade { get; set; }
     }
 }
