@@ -9,23 +9,41 @@ namespace VideoCoursesSystem.Services.Helpers
     {
         public HelperService()
         {
-            this.Ids = new List<string>();
-        }
-        public List<string> Ids { get; set; }
+            this.CourseIds = new List<string>();
+            this.ExerciseIds = new List<string>();
 
-        public void AddId(string id)
+        }
+        public List<string> CourseIds { get; set; }
+
+        public List<string> ExerciseIds { get; set; }
+
+
+        public void AddCourseId(string courseId)
         {
-            this.Ids.Add(id);
+            this.CourseIds.Add(courseId);
+        }
+
+        public void AddExerciseId(string exerciseId)
+        {
+            this.ExerciseIds.Add(exerciseId);
         }
 
         public void Dispose()
         {
-            this.Ids.Clear();
+            this.CourseIds = new List<string>();
+            this.ExerciseIds = new List<string>();
+
         }
 
-        public string GetId()
+        public string GetCourseId()
         {
-            var currentId = this.Ids.FirstOrDefault();
+            var currentId = this.CourseIds.FirstOrDefault();
+            return currentId;
+        }
+
+        public string GetExerciseId()
+        {
+            var currentId = this.ExerciseIds.FirstOrDefault();
             return currentId;
         }
 

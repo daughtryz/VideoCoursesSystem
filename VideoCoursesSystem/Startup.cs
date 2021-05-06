@@ -16,6 +16,7 @@ using VideoCoursesSystem.Areas.Services.Teachers;
 using VideoCoursesSystem.Data;
 using VideoCoursesSystem.Data.Models;
 using VideoCoursesSystem.Services;
+using VideoCoursesSystem.Services.Grades;
 using VideoCoursesSystem.Services.Helpers;
 
 namespace VideoCoursesSystem
@@ -43,6 +44,7 @@ namespace VideoCoursesSystem
             services.AddTransient<ILogsInformationService, LogsInformationService>();
             services.AddTransient<ICoursesService, CoursesService>();
             services.AddSingleton<IHelperService, HelperService>();
+            services.AddTransient<IGradesService, GradesService>();
 
 
             services.AddControllersWithViews();

@@ -13,5 +13,6 @@ namespace VideoCoursesSystem.Areas.Services.Teachers
         IEnumerable<Course> AllCourses();
 
         Course CourseById(string id);
+
     }
 }

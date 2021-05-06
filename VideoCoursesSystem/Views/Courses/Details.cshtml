@@ -16,11 +16,17 @@
     <div class="col-4">
         <h3>Качени упражнения</h3>
         <hr style="height: 1px;" class="bg-info" />
-        <div class="list-group">
-            @foreach (var exercise in Model.Exercises)
-            {
-                <a asp-controller="Students" asp-action="ExerciseDetails" asp-route-id="@exercise.Id" class="list-group-item list-group-item-action list-group-item-primary">@exercise.StudentId</a>
-            }
+        <div class="list">
+            <ul>
+                @foreach (var exercise in Model.Exercises)
+                {
+                <li>
+                    <span>
+                        <a asp-controller="Students" asp-action="ExerciseDetails" asp-route-id="@exercise.Id" class="list-group-item">@exercise.StudentId</a>
+                    </span>
+                </li>
+    }
+                </ul>
 
         </div>
     </div>

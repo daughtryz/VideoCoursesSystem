@@ -7,9 +7,11 @@ namespace VideoCoursesSystem.Services.Helpers
 {
     public interface IHelperService
     {
-        string GetId();
-        void AddId(string courseId);
-       
+        string GetCourseId();
+        string GetExerciseId();
+
+        void AddCourseId(string courseId);
+        void AddExerciseId(string exerciseId);
 
     }
 }
