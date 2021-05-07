@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using VideoCoursesSystem.Areas.Services.Teachers;
 using VideoCoursesSystem.Data.Models;
+using VideoCoursesSystem.ViewModels.DataAnalysis;
 
 namespace VideoCoursesSystem.Services.DataAnalysis
 {
@@ -33,8 +34,91 @@ namespace VideoCoursesSystem.Services.DataAnalysis
                     result.Add(counter, allFilteredExercises.Count);
                 }
             }
-            var a = 5;
             return result;
+        }
+
+        public List<TendencyViewModel> GetTendency()
+        {
+            var result = new List<TendencyViewModel>();
+            IEnumerable<Course> courses = _coursesService.AllCourses();
+            IEnumerable<Exercise> allExercises = _studentsService.AllExercises();
+
+            foreach (var course in courses)
+            {
+                var exercises = allExercises.Where(e => e.CourseId == course.Id && e.StudentId != null).ToList();
+
+                double sum = 0;
+                if(exercises == null)
+                {
+                    continue;
+
+                }
+                if (exercises.Count == 0)
+                {
+                    continue;
+                }
+                int count = exercises.Count;
+                double average = 0.0;
+                List<double> grades = new List<double>();
+                foreach (var exercise in exercises)
+                {
+                    sum += exercise.Mark;
+                    grades.Add(exercise.Mark);
+                }
+                average = sum / count;
+                if(average == 0)
+                {
+                    continue;
+                }
+                double mediana = GetMediana(grades);
+                double moda = GetModa(grades);
+
+                result.Add(new TendencyViewModel
+                {
+                    Average = average,
+                    Mediana = mediana,
+                    Moda = moda,
+                    CourseTitle = course.Title
+                });
+                grades.Clear();
+            }
+            return result;
+        }
+
+        private double GetModa(List<double> grades)
+        {
+            double max_count = 1, res = grades[0];
+            int curr_count = 1;
+
+            for (int i = 1; i < grades.Count; i++)
+            {
+                if (grades[i] == grades[i - 1])
+                    curr_count++;
+                else
+                {
+                    if (curr_count > max_count)
+                    {
+                        max_count = curr_count;
+                        res = grades[i - 1];
+                    }
+                    curr_count = 1;
+                }
+            }
+
+            if (curr_count > max_count)
+            {
+                max_count = curr_count;
+                res = grades[grades.Count - 1];
+            }
+
+            return res;
+        }
+
+        private double GetMediana(List<double> grades)
+        {
+            var filteredGrades = grades.OrderBy(g => g).ToList();
+
+            return filteredGrades[filteredGrades.Count / 2];
         }
     }
 }

@@ -1,0 +1,25 @@
+﻿@model VideoCoursesSystem.ViewModels.DataAnalysis.TendencyListViewModel;
+
+<h3>Мерки на централната тенденция</h3>
+
+<table class="table">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">Упражнение</th>
+            <th scope="col">Средна стойност</th>
+            <th scope="col">Медиана</th>
+            <th scope="col">Мода</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var tendency in Model.Tendencies)
+        {
+        <tr>
+            <td>@tendency.CourseTitle</td>
+            <td>@tendency.Average</td>
+            <td>@tendency.Mediana</td>
+            <td>@tendency.Moda</td>
+        </tr>
+        }
+    </tbody>
+</table>
