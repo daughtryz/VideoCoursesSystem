@@ -53,8 +53,11 @@ namespace VideoCoursesSystem.Controllers
                     viewModel.Exercises.Add(exerciseViewModel);
                 }
             }
-            var log = await _logsInformationService.CreateLogAsync($"The user with id '{applicationUser.Id}' viewed the course with id '{courseId}'.");
-            await _logsInformationService.CreateUserLogAsync(log.Id, applicationUser.Id);
+            if(applicationUser != null)
+            {
+                var log = await _logsInformationService.CreateLogAsync($"The user with id '{applicationUser.Id}' viewed the course with id '{courseId}'.");
+                await _logsInformationService.CreateUserLogAsync(log.Id, applicationUser.Id);
+            }         
 
             return this.View(viewModel);
         }

@@ -155,8 +155,12 @@ namespace VideoCoursesSystem.Controllers
             {
                 viewModel.FileName = _studentsService.GetExerciseById(id).FileName;
             }
-            var log = await _logsInformationService.CreateLogAsync($"The user with id '{applicationUser.Id}' viewed the 'wiki' activity with course module id '{viewModel.CourseId}'.");
-            await _logsInformationService.CreateUserLogAsync(log.Id, applicationUser.Id);
+            if(applicationUser != null)
+            {
+                var log = await _logsInformationService.CreateLogAsync($"The user with id '{applicationUser.Id}' viewed the 'wiki' activity with course module id '{viewModel.CourseId}'.");
+                await _logsInformationService.CreateUserLogAsync(log.Id, applicationUser.Id);
+            }
+           
             return this.View(viewModel);
         }
         [Authorize]
