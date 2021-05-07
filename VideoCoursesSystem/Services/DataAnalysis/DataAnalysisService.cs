@@ -57,11 +57,16 @@ namespace VideoCoursesSystem.Services.DataAnalysis
                 {
                     continue;
                 }
-                int count = exercises.Count;
+                int count = 0;
                 double average = 0.0;
                 List<double> grades = new List<double>();
                 foreach (var exercise in exercises)
                 {
+                    if(exercise.Mark == 0)
+                    {
+                        continue;
+                    }
+                    count++;
                     sum += exercise.Mark;
                     grades.Add(exercise.Mark);
                 }
@@ -87,37 +92,45 @@ namespace VideoCoursesSystem.Services.DataAnalysis
 
         private double GetModa(List<double> grades)
         {
-            double max_count = 1, res = grades[0];
-            int curr_count = 1;
-
-            for (int i = 1; i < grades.Count; i++)
+            if(grades.Count > 0)
             {
-                if (grades[i] == grades[i - 1])
-                    curr_count++;
-                else
+                double max_count = 1, res = grades[0];
+                int curr_count = 1;
+
+                for (int i = 1; i < grades.Count; i++)
                 {
-                    if (curr_count > max_count)
+                    if (grades[i] == grades[i - 1])
+                        curr_count++;
+                    else
                     {
-                        max_count = curr_count;
-                        res = grades[i - 1];
+                        if (curr_count > max_count)
+                        {
+                            max_count = curr_count;
+                            res = grades[i - 1];
+                        }
+                        curr_count = 1;
                     }
-                    curr_count = 1;
                 }
-            }
 
-            if (curr_count > max_count)
-            {
-                max_count = curr_count;
-                res = grades[grades.Count - 1];
+                if (curr_count > max_count)
+                {
+                    max_count = curr_count;
+                    res = grades[grades.Count - 1];
+                }
+                return res;
             }
+           
 
-            return res;
+            return 0.0;
         }
 
         private double GetMediana(List<double> grades)
         {
             var filteredGrades = grades.OrderBy(g => g).ToList();
-
+            if(filteredGrades.Count == 0)
+            {
+                return 0.0;
+            }
             return filteredGrades[filteredGrades.Count / 2];
         }
     }

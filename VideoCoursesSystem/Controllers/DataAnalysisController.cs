@@ -40,7 +40,7 @@ namespace VideoCoursesSystem.Controllers
         {
             TendencyListViewModel viewModel = new TendencyListViewModel
             {
-                Tendencies = _dataAnalysisService.GetTendency()
+                Tendencies = _dataAnalysisService.GetTendency().Where(t => t.Mediana > 0 && t.Moda > 0)
             };
             return this.View(viewModel);
         }
