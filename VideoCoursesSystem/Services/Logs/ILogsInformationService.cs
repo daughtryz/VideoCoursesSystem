@@ -16,6 +16,5 @@ namespace VideoCoursesSystem.Services
 
         Task CreateUserLogAsync(string logInfoId, string userId);
 
-
     }
 }
