@@ -11,7 +11,6 @@ namespace VideoCoursesSystem.Controllers
     public class DataAnalysisController : Controller
     {
         private readonly IDataAnalysisService _dataAnalysisService;
-
         public DataAnalysisController(IDataAnalysisService dataAnalysisService)
         {
             _dataAnalysisService = dataAnalysisService;
@@ -34,6 +33,15 @@ namespace VideoCoursesSystem.Controllers
                 viewModel.FrequenciesOtn.Add(res);
             }
 
+            return this.View(viewModel);
+        }
+
+        public IActionResult Tendency()
+        {
+            TendencyListViewModel viewModel = new TendencyListViewModel
+            {
+                Tendencies = _dataAnalysisService.GetTendency()
+            };
             return this.View(viewModel);
         }
 
