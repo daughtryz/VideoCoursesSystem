@@ -82,15 +82,14 @@ namespace VideoCoursesSystem.Controllers
             await _studentsService.UploadExerciseAsync(exercises, applicationUser.Id, courseId);
             return RedirectToAction("Details", "Courses", new { area = "",id = courseId });
         }
-        public IActionResult FileSubmissions()
-        {
-            return this.View();
-        }
+
         [Authorize(Roles = "Admin")]
         public IActionResult StudentsActivities()
         {
             var logs = new Dictionary<string, List<LogInformationViewModel>>();
-            var partLogs = _logsInformationService.GetAllUserLogs().Take(30);
+
+            var partLogs = _logsInformationService.GetAllUserLogs();
+
             foreach (var userLog in partLogs)
             {
                 string studentId = userLog.StudentId;
@@ -145,9 +144,10 @@ namespace VideoCoursesSystem.Controllers
             await _studentsService.EditExerciseMarkAsync(viewModel.Id, model.Mark,viewModel.StudentId);
             return this.RedirectToAction("ExerciseDetails","Students",new {id= viewModel.Id });
         }
-        public IActionResult ExerciseDetails(string id)
+        public async Task<IActionResult> ExerciseDetails(string id)
         {
             var viewModel = _mapper.Map<ExerciseViewModel>(_studentsService.GetExerciseById(id));
+            ApplicationUser applicationUser = await _userManager.GetUserAsync(User);
             if (_studentsService.GetExerciseById(id).FileName.Contains("|"))
             {
                 viewModel.FileNames = _studentsService.GetExerciseById(id).FileName.Split("|").ToArray();
@@ -155,7 +155,8 @@ namespace VideoCoursesSystem.Controllers
             {
                 viewModel.FileName = _studentsService.GetExerciseById(id).FileName;
             }
-            
+            var log = await _logsInformationService.CreateLogAsync($"The user with id '{applicationUser.Id}' viewed the 'wiki' activity with course module id '{viewModel.CourseId}'.");
+            await _logsInformationService.CreateUserLogAsync(log.Id, applicationUser.Id);
             return this.View(viewModel);
         }
         [Authorize]
