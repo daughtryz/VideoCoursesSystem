@@ -15,14 +15,39 @@ namespace VideoCoursesSystem.Services
         {
             _db = db;
         }
+
+        public async Task<LogInformation> CreateLogAsync(string description)
+        {
+            var log = new LogInformation
+            {
+                Description = description,
+                CreatedOn = DateTime.UtcNow
+            };
+            await _db.LogsInformation.AddAsync(log);
+            await _db.SaveChangesAsync();
+            return log;
+        }
+
+        public async Task CreateUserLogAsync(string logInfoId, string userId)
+        {
+            var userLog = new UserLogInformation
+            {
+                LogInformationId = logInfoId,
+                StudentId = userId
+            };
+
+            await _db.UserLogsInformation.AddAsync(userLog);
+            await _db.SaveChangesAsync();
+        }
+
         public IEnumerable<LogInformation> GetAllLogs()
         {
-            return _db.LogsInformation.ToList();
+            return _db.LogsInformation.Take(20).OrderByDescending(l => l.CreatedOn).ToList();
         }
 
         public IEnumerable<UserLogInformation> GetAllUserLogs()
         {
-            return _db.UserLogsInformation.ToList();
+            return _db.UserLogsInformation.Take(20).ToList();
         }
     }
 }

@@ -11,6 +11,5 @@ namespace VideoCoursesSystem.Data.Models
         public LogInformation LogInformation { get; set; }
         public string StudentId { get; set; }
         public ApplicationUser Student { get; set; }
-
     }
 }

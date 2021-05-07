@@ -12,5 +12,10 @@ namespace VideoCoursesSystem.Services
 
         public IEnumerable<UserLogInformation> GetAllUserLogs();
 
+        Task<LogInformation> CreateLogAsync(string description);
+
+        Task CreateUserLogAsync(string logInfoId, string userId);
+
+
     }
 }

@@ -13,6 +13,7 @@ namespace VideoCoursesSystem.Data.Models
         }
         public string Id { get; set; }
 
+        public DateTime CreatedOn { get; set; }
         public string Description { get; set; }
     }
 }
