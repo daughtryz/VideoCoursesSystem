@@ -1,7 +1,12 @@
 ﻿@using VideoCoursesSystem.Data.Models;
 @model VideoCoursesSystem.ViewModels.Exercises.ExerciseViewModel;
 @inject SignInManager<ApplicationUser> signInManager;
+@inject UserManager<ApplicationUser> userManager;
 
+@{
+    ApplicationUser applicationUser = await userManager.GetUserAsync(User);
+
+}
 <h2>Submission status</h2>
 <form>
     <h4>Submitted files:</h4>
@@ -55,5 +60,8 @@
             </tr>
         </tbody>
     </table>
-    <button type="submit" class="btn btn-primary" asp-controller="Students" asp-action="ExerciseEdit" asp-route-id="@Model.Id">Edit submission</button>
+    @if (applicationUser.Id == Model.StudentId)
+    {
+        <button type="submit" class="btn btn-primary" asp-controller="Students" asp-action="ExerciseEdit" asp-route-id="@Model.Id">Edit submission</button>
+    }
 </form>
