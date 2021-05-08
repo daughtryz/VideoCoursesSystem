@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 using VideoCoursesSystem.Areas.Services.Teachers;
 using VideoCoursesSystem.Data;
 using VideoCoursesSystem.Data.Models;
+using VideoCoursesSystem.Middlewares;
 using VideoCoursesSystem.Services;
 using VideoCoursesSystem.Services.DataAnalysis;
 using VideoCoursesSystem.Services.Grades;
@@ -80,6 +81,8 @@ namespace VideoCoursesSystem
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.UseAdminMiddleware();
 
             app.UseEndpoints(endpoints =>
             {
