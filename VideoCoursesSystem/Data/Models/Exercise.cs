@@ -15,6 +15,7 @@ namespace VideoCoursesSystem.Data.Models
         public string Id { get; set; }
         public double Mark { get; set; }
         public byte[] File { get; set; }
+        public int EditWikiCount { get; set; }
         public string CourseId { get; set; }
         public Course Course { get; set; }
         public string StudentId { get; set; }

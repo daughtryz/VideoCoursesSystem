@@ -42,12 +42,12 @@ namespace VideoCoursesSystem.Services
 
         public IEnumerable<LogInformation> GetAllLogs()
         {
-            return _db.LogsInformation.Take(20).OrderByDescending(l => l.CreatedOn).ToList();
+            return _db.LogsInformation.OrderByDescending(l => l.CreatedOn).ToList();
         }
 
         public IEnumerable<UserLogInformation> GetAllUserLogs()
         {
-            return _db.UserLogsInformation.Take(20).ToList();
+            return _db.UserLogsInformation.ToList();
         }
     }
 }
