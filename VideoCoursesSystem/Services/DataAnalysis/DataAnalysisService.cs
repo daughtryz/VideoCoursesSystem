@@ -206,7 +206,7 @@ namespace VideoCoursesSystem.Services.DataAnalysis
                 return new[] { minValue, maxValue };
             } else if(grades.Count == 1)
             {
-                return new[] { grades[0], grades[0] };
+                return new[] { 0, grades[0] };
             }
 
             return new[] { 0.0, 0.0 };
