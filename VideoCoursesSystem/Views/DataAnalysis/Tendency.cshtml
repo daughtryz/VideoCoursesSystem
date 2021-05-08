@@ -15,7 +15,7 @@
         @foreach (var tendency in Model.Tendencies)
         {
         <tr>
-            <td>@tendency.CourseTitle</td>
+            <td><i class="fas fa-book"></i>   <a asp-controller="Courses" asp-action="Details" asp-route-id="@tendency.CourseId">@tendency.CourseTitle</a></td>
             <td>@tendency.Average</td>
             <td>@tendency.Mediana</td>
             <td>@tendency.Moda</td>
