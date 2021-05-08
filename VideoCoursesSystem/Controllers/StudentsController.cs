@@ -10,6 +10,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using VideoCoursesSystem.Areas.Services.Teachers;
+using VideoCoursesSystem.Data;
 using VideoCoursesSystem.Data.Models;
 using VideoCoursesSystem.InputModels;
 using VideoCoursesSystem.Services;
@@ -29,6 +30,7 @@ namespace VideoCoursesSystem.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IGradesService _gradesService;
         private readonly ICoursesService _coursesService;
+        private readonly ApplicationDbContext _db;
 
         public StudentsController(IHelperService helperService,
             IStudentsService studentsService,
@@ -36,7 +38,7 @@ namespace VideoCoursesSystem.Controllers
             ILogsInformationService logsInformationService,
             UserManager<ApplicationUser> userManager,
             IGradesService gradesService,
-            ICoursesService coursesService)
+            ICoursesService coursesService,ApplicationDbContext db)
         {
             _helperService = helperService;
             _studentsService = studentsService;
@@ -45,6 +47,7 @@ namespace VideoCoursesSystem.Controllers
             _userManager = userManager;
             _gradesService = gradesService;
             _coursesService = coursesService;
+            _db = db;
         }
         public IActionResult Index()
         {
@@ -89,7 +92,7 @@ namespace VideoCoursesSystem.Controllers
             var logs = new Dictionary<string, List<LogInformationViewModel>>();
 
             var partLogs = _logsInformationService.GetAllUserLogs();
-
+            var allLogs = _logsInformationService.GetAllLogs();
             foreach (var userLog in partLogs)
             {
                 string studentId = userLog.StudentId;
@@ -97,7 +100,8 @@ namespace VideoCoursesSystem.Controllers
                 {
                     logs.Add(studentId, new List<LogInformationViewModel>());
                 }
-                logs[studentId].Add(_mapper.Map<LogInformationViewModel>(_logsInformationService.GetAllLogs().FirstOrDefault(l => l.Id == userLog.LogInformationId)));
+                var log = allLogs.FirstOrDefault(l => l.Id == userLog.LogInformationId);
+                logs[studentId].Add(_mapper.Map<LogInformationViewModel>(log));
             }
             var viewModel = new LogInformationListViewModel
             {
