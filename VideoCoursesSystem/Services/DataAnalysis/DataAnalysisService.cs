@@ -1,20 +1,26 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using VideoCoursesSystem.Areas.Services.Teachers;
 using VideoCoursesSystem.Data.Models;
 using VideoCoursesSystem.ViewModels.DataAnalysis;
+using VideoCoursesSystem.ViewModels.Exercises;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace VideoCoursesSystem.Services.DataAnalysis
 {
     public class DataAnalysisService : IDataAnalysisService
     {
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly IStudentsService _studentsService;
         private readonly ICoursesService _coursesService;
-
-        public DataAnalysisService(IStudentsService studentsService,ICoursesService coursesService)
+        private List<List<double>> helper = new List<List<double>>();
+        private static double corel = 0.0;
+        public DataAnalysisService(UserManager<ApplicationUser> userManager, IStudentsService studentsService,ICoursesService coursesService)
         {
+            _userManager = userManager;
             _studentsService = studentsService;
             _coursesService = coursesService;
         }
@@ -211,6 +217,28 @@ namespace VideoCoursesSystem.Services.DataAnalysis
 
             return new[] { 0.0, 0.0 };
             
+        }
+
+        public Dictionary<string,int> GetWikisEditFrequency()
+        {
+            var result = new Dictionary<string, int>();
+            IEnumerable<Exercise> allExercises = _studentsService.AllExercises();
+            IEnumerable<Course> courses = _coursesService.AllCourses();
+            foreach (var course in courses)
+            {
+                var filteredExercise = allExercises.FirstOrDefault(e => e.CourseId == course.Id && e.StudentId != null && e.EditWikiCount > 0);
+
+                if(filteredExercise == null)
+                {
+                    continue;
+                }
+                var currentCourse = courses.FirstOrDefault(x => x.Id == filteredExercise.CourseId);
+                if (!result.ContainsKey(currentCourse.Title))
+                {
+                    result.Add(currentCourse.Title, filteredExercise.EditWikiCount);
+                }
+            }
+            return result;
         }
     }
 }

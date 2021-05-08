@@ -8,6 +8,7 @@ namespace VideoCoursesSystem.ViewModels.DataAnalysis
     public class FrequencyViewModel
     {
         public Dictionary<int, int> Freq { get; set; }
+        public Dictionary<string,int> FreqWiki { get; set; }
         public int AllCount { get; set; }
         public double OtnFrequency { get; set; }
         public List<double> FrequenciesOtn { get; set; }

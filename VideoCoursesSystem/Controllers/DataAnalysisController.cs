@@ -15,7 +15,25 @@ namespace VideoCoursesSystem.Controllers
         {
             _dataAnalysisService = dataAnalysisService;
         }
+        public IActionResult Corelation()
+        {
+            var result = _dataAnalysisService.GetWikisEditFrequency();
+            FrequencyViewModel viewModel = new FrequencyViewModel
+            {
+                FreqWiki = result,
+                AllCount = result.Values.Sum(),
+                FrequenciesOtn = new List<double>()
+            };
 
+            foreach (var kvp in result)
+            {
+                var res = Math.Round((kvp.Value * 1.0 / viewModel.AllCount * 100), 1);
+                viewModel.OtnFrequency += res;
+                viewModel.FrequenciesOtn.Add(res);
+            }
+
+            return this.View(viewModel);
+        }
         public IActionResult Frequency()
         {
             var result = _dataAnalysisService.GetFrequency();

@@ -53,7 +53,6 @@ namespace VideoCoursesSystem.Controllers
         {
             return View();
         }
-        public string CourseId { get; set; }
         public IActionResult FirstYearStudentsGrades()
         {
             var viewModel = new GradeListViewModel
@@ -62,7 +61,18 @@ namespace VideoCoursesSystem.Controllers
             };
             return View(viewModel);
         }
-
+        public async Task<IActionResult> MySubmittedExercisesToCourse()
+        {
+            ApplicationUser applicationUser = await _userManager.GetUserAsync(User);
+            var viewModel = new ExerciseListViewModel
+            {
+                Exercises = _studentsService.GetSubmittedExercises(applicationUser.Id).Select(se => new ExerciseViewModel
+                {
+                    Course = _mapper.Map<CourseViewModel>(_coursesService.CourseById(se.CourseId))
+                })
+            };
+            return this.View(viewModel);
+        }
         public IActionResult SecondYearStudentsGrades()
         {
             var viewModel = new GradeListViewModel
