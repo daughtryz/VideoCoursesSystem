@@ -44,6 +44,13 @@ namespace VideoCoursesSystem.Controllers
             };
             return this.View(viewModel);
         }
-
+        public IActionResult Distraction()
+        {
+            DistractionListViewModel viewModel = new DistractionListViewModel
+            {
+                Distractions = _dataAnalysisService.GetDistraction()
+            };
+            return this.View(viewModel);
+        }
     }
 }

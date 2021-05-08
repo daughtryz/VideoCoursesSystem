@@ -9,7 +9,8 @@ namespace VideoCoursesSystem.Services.DataAnalysis
     public interface IDataAnalysisService
     {
         Dictionary<int, int> GetFrequency();
-
         List<TendencyViewModel> GetTendency();
+
+        List<DistractionViewModel> GetDistraction();
     }
 }

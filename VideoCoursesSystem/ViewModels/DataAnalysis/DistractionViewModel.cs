@@ -5,15 +5,12 @@ using System.Threading.Tasks;
 
 namespace VideoCoursesSystem.ViewModels.DataAnalysis
 {
-    public class TendencyViewModel
+    public class DistractionViewModel
     {
+        public double StandardDeviation { get; set; }
+        public double Dispersion { get; set; }
+        public double Scope { get; set; }
         public string CourseTitle { get; set; }
-        public double Average { get; set; }
-
-        public double Mediana { get; set; }
-
         public string CourseId { get; set; }
-
-        public double Moda { get; set; }
     }
 }

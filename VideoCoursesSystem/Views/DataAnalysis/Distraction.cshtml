@@ -1,0 +1,25 @@
+﻿@model VideoCoursesSystem.ViewModels.DataAnalysis.DistractionListViewModel;
+
+<h3>Мерки на централната тенденция</h3>
+
+<table class="table">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">Упражнение</th>
+            <th scope="col">Дисперсия</th>
+            <th scope="col">Стандартно отклонение</th>
+            <th scope="col">Размах</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var distraction in Model.Distractions)
+        {
+            <tr>
+                <td><i class="fas fa-book"></i>   <a asp-controller="Courses" asp-action="Details" asp-route-id="@distraction.CourseId">@distraction.CourseTitle</a></td>
+                <td>@distraction.Dispersion</td>
+                <td>@distraction.StandardDeviation</td>
+                <td>@distraction.Scope</td>
+            </tr>
+        }
+    </tbody>
+</table>

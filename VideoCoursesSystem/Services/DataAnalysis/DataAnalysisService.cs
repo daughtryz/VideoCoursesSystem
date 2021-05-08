@@ -36,7 +36,7 @@ namespace VideoCoursesSystem.Services.DataAnalysis
             }
             return result;
         }
-
+        
         public List<TendencyViewModel> GetTendency()
         {
             var result = new List<TendencyViewModel>();
@@ -80,6 +80,7 @@ namespace VideoCoursesSystem.Services.DataAnalysis
 
                 result.Add(new TendencyViewModel
                 {
+                    CourseId = course.Id,
                     Average = average,
                     Mediana = mediana,
                     Moda = moda,
@@ -132,6 +133,84 @@ namespace VideoCoursesSystem.Services.DataAnalysis
                 return 0.0;
             }
             return filteredGrades[filteredGrades.Count / 2];
+        }
+
+        private double GetStandardDeviation(List<double> grades)
+        {
+            double average = grades.Average();
+            double sumOfDerivation = 0;
+            foreach (double value in grades)
+            {
+                sumOfDerivation += (value) * (value);
+            }
+            double sumOfDerivationAverage = sumOfDerivation / (grades.Count);
+            return Math.Sqrt(sumOfDerivationAverage - (average * average));
+        }
+
+        public List<DistractionViewModel> GetDistraction()
+        {
+            var result = new List<DistractionViewModel>();
+            IEnumerable<Course> courses = _coursesService.AllCourses();
+            IEnumerable<Exercise> allExercises = _studentsService.AllExercises();
+
+            foreach (var course in courses)
+            {
+                var exercises = allExercises.Where(e => e.CourseId == course.Id && e.StudentId != null).ToList();
+
+                if (exercises == null)
+                {
+                    continue;
+
+                }
+                if (exercises.Count == 0)
+                {
+                    continue;
+                }
+                int count = 0;
+                List<double> grades = new List<double>();
+                foreach (var exercise in exercises)
+                {
+                    if (exercise.Mark == 0)
+                    {
+                        continue;
+                    }
+                    count++;
+                    grades.Add(exercise.Mark);
+                }
+                if(grades.Count == 0)
+                {
+                    continue;
+                }
+                double[] scope = GetScope(grades);
+                double standardDeviation = GetStandardDeviation(grades);
+                result.Add(new DistractionViewModel
+                {
+                    CourseId = course.Id,
+                    Scope = scope[1] - scope[0],
+                    CourseTitle = course.Title,
+                    StandardDeviation = standardDeviation,
+                    Dispersion = Math.Pow(standardDeviation,2)
+                });
+                grades.Clear();
+            }
+            return result;
+        }
+
+        private double[] GetScope(List<double> grades)
+        {
+            if(grades.Count > 1)
+            {
+                var minValue = grades.Min();
+                var maxValue = grades.Max();
+
+                return new[] { minValue, maxValue };
+            } else if(grades.Count == 1)
+            {
+                return new[] { grades[0], grades[0] };
+            }
+
+            return new[] { 0.0, 0.0 };
+            
         }
     }
 }
