@@ -22,6 +22,10 @@ namespace VideoCoursesSystem.Areas.Administration.Controllers
         [HttpPost]
         public async Task<IActionResult> UploadCourse(CourseInputModel exercise)
         {
+            if (!this.ModelState.IsValid)
+            {
+                return this.View(exercise);
+            }
             await _coursesService.CreateCourseAsync(exercise.Title, exercise.Component, exercise.Description, exercise.StartDate, exercise.EndDate);
             return RedirectToAction("All", "Courses", new { area = "" });
         }

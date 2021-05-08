@@ -38,7 +38,7 @@ namespace VideoCoursesSystem.Middlewares
 
                 if (result.Succeeded)
                 {
-                    await userManager.AddToRoleAsync(user, "Admin");
+                    await userManager.AddToRoleAsync(user, "ADMIN");
                 }
                 else
                 {
