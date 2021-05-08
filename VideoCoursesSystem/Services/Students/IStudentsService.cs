@@ -17,6 +17,9 @@ namespace VideoCoursesSystem.Data.Models
         Exercise GetExerciseById(string id);
 
         IEnumerable<Exercise> GetStudentExercises(string studentId);
+
+        IEnumerable<Exercise> GetSubmittedExercises(string studentId);
+
         public Task EditExerciseMarkAsync(string exerciseId,double mark,string studentId);
     }
 }

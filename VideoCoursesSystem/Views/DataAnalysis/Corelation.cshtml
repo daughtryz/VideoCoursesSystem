@@ -1,0 +1,30 @@
+﻿@model VideoCoursesSystem.ViewModels.DataAnalysis.FrequencyViewModel;
+
+<h3>Честотна таблица на брой редактирани wiki</h3>
+@{
+    var counter = 0;
+}
+<table class="table">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">Упражнения с брой редактирани wiki</th>
+            <th scope="col">Абсолютна честота</th>
+            <th scope="col">Относителна честота</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var kvp in Model.FreqWiki)
+        {
+            <tr>
+                <td>@kvp.Key</td>
+                <td>@kvp.Value</td>
+                <td>@Model.FrequenciesOtn[counter++]</td>
+            </tr>
+        }
+        <tr>
+            <td>Общо</td>
+            <td>@Model.AllCount</td>
+            <td>@((int)(Model.OtnFrequency))</td>
+        </tr>
+    </tbody>
+</table>

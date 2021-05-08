@@ -46,7 +46,8 @@ namespace VideoCoursesSystem.Services
                     _db.Exercises.Update(currentExercise);
                 }
             }
-            
+            currentExercise.EditWikiCount++;
+            _db.Exercises.Update(currentExercise);
             await _db.SaveChangesAsync();
         }
         public async Task EditExerciseMarkAsync(string exerciseId,double mark,string studentId)
@@ -84,7 +85,10 @@ namespace VideoCoursesSystem.Services
         {
             return _db.Exercises.Where(x => x.StudentId == studentId && x.GradeId != null).ToList();            
         }
-
+        public IEnumerable<Exercise> GetSubmittedExercises(string studentId)
+        {
+            return _db.Exercises.Where(x => x.StudentId == studentId && x.GradeId == null).ToList();
+        }
         public IEnumerable<Grade> GetStudentGrades()
         {
             return _db.Grades.ToList();
