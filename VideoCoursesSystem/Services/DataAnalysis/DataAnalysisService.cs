@@ -24,6 +24,11 @@ namespace VideoCoursesSystem.Services.DataAnalysis
             _studentsService = studentsService;
             _coursesService = coursesService;
         }
+        public DataAnalysisService(IStudentsService studentsService, ICoursesService coursesService)
+        {
+            _studentsService = studentsService;
+            _coursesService = coursesService;
+        }
       
         public Dictionary<int, int> GetFrequency()
         {
@@ -97,7 +102,7 @@ namespace VideoCoursesSystem.Services.DataAnalysis
             return result;
         }
 
-        private double GetModa(List<double> grades)
+        public double GetModa(List<double> grades)
         {
             if(grades.Count > 0)
             {
@@ -131,7 +136,7 @@ namespace VideoCoursesSystem.Services.DataAnalysis
             return 0.0;
         }
 
-        private double GetMediana(List<double> grades)
+        public double GetMediana(List<double> grades)
         {
             var filteredGrades = grades.OrderBy(g => g).ToList();
             if(filteredGrades.Count == 0)
@@ -141,7 +146,7 @@ namespace VideoCoursesSystem.Services.DataAnalysis
             return filteredGrades[filteredGrades.Count / 2];
         }
 
-        private double GetStandardDeviation(List<double> grades)
+        public double GetStandardDeviation(List<double> grades)
         {
             double average = grades.Average();
             double sumOfDerivation = 0;
@@ -202,7 +207,7 @@ namespace VideoCoursesSystem.Services.DataAnalysis
             return result;
         }
 
-        private double[] GetScope(List<double> grades)
+        public double[] GetScope(List<double> grades)
         {
             if(grades.Count > 1)
             {
