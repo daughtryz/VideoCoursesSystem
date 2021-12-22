@@ -1,20 +1,20 @@
-﻿
-
+﻿@model VideoCoursesSystem.CustomAttributes.VideoCategoriesViewModel;
 @{
     ViewData["Title"] = "Home Page";
 }
 
+
 <div class="list">
     <ul>
-        <li class="list-group-item"><span><a asp-controller="Students" asp-action="Index">Четене и обобщаване на данните от файлове с дейности и оценки</a></span></li>
-        <li class="list-group-item"><span><a asp-controller="DataAnalysis" asp-action="Frequency" asp-area="">Честотно разпределение</a></span></li>
-        <li class="list-group-item"><span><a asp-controller="DataAnalysis" asp-action="Tendency" asp-area="">Мерки на централната тенденция</a></span></li>
-        <li class="list-group-item"><span><a asp-controller="DataAnalysis" asp-action="Distraction" asp-area="">Мерки на разсейване</a></span></li>
-        <li class="list-group-item"><span><a asp-controller="DataAnalysis" asp-action="Corelation" asp-area="">Корелационен анализ</a></span></li>
+        <li class="list-group-item"><span><a asp-controller="Students" asp-action="Index">@Model.Categories[0]</a></span></li>
+        <li class="list-group-item"><span><a asp-controller="DataAnalysis" asp-action="Frequency" asp-area="">@Model.Categories[1]</a></span></li>
+        <li class="list-group-item"><span><a asp-controller="DataAnalysis" asp-action="Tendency" asp-area="">@Model.Categories[2]</a></span></li>
+        <li class="list-group-item"><span><a asp-controller="DataAnalysis" asp-action="Distraction" asp-area="">@Model.Categories[3]</a></span></li>
+        <li class="list-group-item"><span><a asp-controller="DataAnalysis" asp-action="Corelation" asp-area="">@Model.Categories[4]</a></span></li>
     </ul>
 
     @*<form asp-controller="Home" asp-action="UploadStudentsGrades" method="POST" enctype="multipart/form-data">
-        <input type="file" id="myFile" name="uploadedFile">
-        <input type="submit">
-    </form>*@
+            <input type="file" id="myFile" name="uploadedFile">
+            <input type="submit">
+        </form>*@
 </div>

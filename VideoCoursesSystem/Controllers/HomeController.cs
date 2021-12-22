@@ -8,12 +8,20 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using VideoCoursesSystem.CustomAttributes;
 using VideoCoursesSystem.Data;
 using VideoCoursesSystem.Data.Models;
 using VideoCoursesSystem.Models;
 
 namespace VideoCoursesSystem.Controllers
 {
+    //Четене и обобщаване на данните от файлове с дейности и оценки</a></span></li>
+    //    <li class="list-group-item"><span><a asp-controller="DataAnalysis" asp-action="Frequency" asp-area="">Честотно разпределение</a></span></li>
+    //    <li class="list-group-item"><span><a asp-controller="DataAnalysis" asp-action="Tendency" asp-area="">Мерки на централната тенденция</a></span></li>
+    //    <li class="list-group-item"><span><a asp-controller="DataAnalysis" asp-action="Distraction" asp-area="">Мерки на разсейване</a></span></li>
+    //    <li class="list-group-item"><span><a asp-controller="DataAnalysis" asp-action="Corelation" asp-area="">Корелационен анализ</a></span></li>
+   [VideoCoursesCategories(new [] { "Четене и обобщаване на данните от файлове с дейности и оценки",
+       "Честотно разпределение","Мерки на централната тенденция","Мерки на разсейване","Корелационен анализ" })]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -28,7 +36,17 @@ namespace VideoCoursesSystem.Controllers
         public IActionResult Index()
         {
             //Index page.
-            return View();
+            VideoCoursesCategoriesAttribute attr = (VideoCoursesCategoriesAttribute)Attribute.GetCustomAttribute(typeof(HomeController), typeof(VideoCoursesCategoriesAttribute));
+            if (attr == null)
+            {
+                throw new ArgumentException();
+            }
+
+            VideoCategoriesViewModel result = new VideoCategoriesViewModel
+            {
+                Categories = attr.Categories
+            };
+            return View(result);
         }
 
         public IActionResult Privacy()
