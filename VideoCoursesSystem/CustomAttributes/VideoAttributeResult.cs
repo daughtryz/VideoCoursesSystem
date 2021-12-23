@@ -9,5 +9,6 @@ namespace VideoCoursesSystem.CustomAttributes
     {
         public string Title { get; set; }
         public string TitleVersion { get; set; }
+        //commwn
     }
 }
